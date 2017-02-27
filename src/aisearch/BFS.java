@@ -24,6 +24,7 @@ public class BFS implements AIFramework {
     private final ArrayList<Nodo> destinos;
     //private final ArrayList<Nodo> path = new ArrayList<>();
     private  Set<Nodo> nodosEvaluados;
+    private ArrayList<Nodo> completePath;
     
     public BFS(int ancho, int alto, BufferedImage image) {
         this.grafo = new Grafo(ancho, alto);
@@ -31,6 +32,7 @@ public class BFS implements AIFramework {
         this.inicio = grafo.getInicio();
         this.destinos = grafo.getDestino();  
         this.nodosEvaluados = new HashSet();
+        
     }
     
     public void run() {
@@ -41,35 +43,41 @@ public class BFS implements AIFramework {
         int contadorIteraciones = 0;
         while (!frontera.isEmpty()) {
             ArrayList<Nodo> path = frontera.poll(); //get first node
-            Nodo last = path.remove(path.size()-1);
+            
+            Nodo last = path.get(path.size()-1);
+           
+            if (nodosEvaluados.contains(last)) {
+                continue;
+            }
             this.nodosEvaluados.add(last);
+            
+            
             if (goalTest(last, destinos)) {//en caso de encontrar el destino, termina el algoritmo  
                 System.out.println("Iteraciones totales-> " + contadorIteraciones);
                 System.out.println(path);
+                System.out.println(destinos);
                 System.out.println(last);
+                this.completePath = path;
                // System.out.println("Costo Total-> " + (pathCost(last)));
                 //reconstruirCamino(actual);//se muestra el nuevo camino
                 break;
             }
-            
+          
             
             for (Nodo adyacente : actions(last)) {
             
                 //en caso de que un nodo ya haya sido evaluado
                 //se omite del ciclo
-                if (nodosEvaluados.contains(adyacente))
-                    continue; //se salta una iteracion
                 
                 //mientras no sea un obstaculo el nodo
                 if (!adyacente.isObstaculo()) {
                     ArrayList<Nodo> newPath = new ArrayList();
+                    //System.out.println(path);
                     newPath.addAll(path);
                     Nodo newNode = result(last, adyacente);
-                    if (!newPath.contains(newNode)) {
-                        newPath.add(newNode);
-                    }
-                    if (!frontera.contains(newPath))
-                        frontera.add(newPath);
+                    newPath.add(newNode);
+                    frontera.add(newPath);
+                    
                    
                 }
              }
@@ -102,6 +110,20 @@ public class BFS implements AIFramework {
     public Nodo result(Nodo a, Nodo s) {
         return s;
     }
+
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public Set<Nodo> getNodosEvaluados() {
+        return nodosEvaluados;
+    }
+
+    public ArrayList<Nodo> getCompletePath() {
+        return completePath;
+    }
+    
+    
     
     
 
