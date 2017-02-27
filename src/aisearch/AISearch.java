@@ -21,6 +21,8 @@ public class AISearch {
         int size = 25;
         ImageParser parse = new ImageParser(size);
         AStar astar = new AStar(size, size, parse.getResized());
+        BFS bfs = new BFS(size, size, parse.getResized());
+        bfs.run();
         astar.calcular(false,false,false, true);
         JFrame window = new JFrame();
  

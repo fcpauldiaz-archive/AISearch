@@ -28,7 +28,7 @@ public class DFS implements AIFramework{
         this.inicio = grafo.getInicio();
         this.destinos = grafo.getDestino();  
     }
-
+    
     @Override
     public boolean goalTest(Nodo test, ArrayList<Nodo> goalTrue) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -50,7 +50,8 @@ public class DFS implements AIFramework{
     }
 
     @Override
-    public Nodo result(Nodo a) {
+    public Nodo result(Nodo a, Nodo s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

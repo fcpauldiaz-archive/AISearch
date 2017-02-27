@@ -14,11 +14,11 @@ import java.util.ArrayList;
  */
 public interface AIFramework {
     
-    public boolean goalTest(Nodo test, ArrayList<Nodo> goalTrue); //check
+    public boolean goalTest(Nodo test, ArrayList<Nodo> goal); //check
     public double stepCost(Nodo nodo, Nodo nodo2); //check
     public double pathCost(Nodo nodo);
-    public ArrayList actions(Nodo nodo);
-    public Nodo result(Nodo a);
+    public ArrayList<Nodo> actions(Nodo nodo);
+    public Nodo result(Nodo a, Nodo s);
     
 
 }

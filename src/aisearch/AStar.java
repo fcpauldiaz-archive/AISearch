@@ -163,7 +163,7 @@ public class AStar implements AIFramework {
     }
 
     @Override
-    public Nodo result(Nodo a) {
+    public Nodo result(Nodo a, Nodo s) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -175,36 +175,7 @@ public class AStar implements AIFramework {
 
     @Override
     public ArrayList<Nodo> actions(Nodo nodo) {
-        //si es con diagonales se crea un número aleatorio con probabilidad 1/2
-        int x = nodo.getX(); int y = nodo.getY();
-        
-        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
-        //verificar los nodos con x constantes y y hacia abajo
-        if ((y != 0)) 
-        {
-            nodosAdyacentes.add(grafo.getNodo(x, (y - 1)));
-        }
-        
-       //verificar los nodos con x hacia la derecha y y constante
-        if ((x != (grafo.getAncho() - 1))) {
-            nodosAdyacentes.add(grafo.getNodo(x + 1, y));
-
-        }
-        //verificar los nodos con x constante y y hacia arriba
-        if ((y != (grafo.getAlto() - 1)))
-        {
-            nodosAdyacentes.add(grafo.getNodo(x, y + 1));
-
-        }
-        
-       //verificar los nodos x hacia abajo y y constante
-        if ((x != 0)) 
-        {
-            nodosAdyacentes.add(grafo.getNodo(x - 1, y));
-
-        }
-        
-        return nodosAdyacentes;
+       return this.grafo.getNeighbors(nodo);
     }
     
     //Get the total cost of the path

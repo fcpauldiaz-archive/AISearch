@@ -6,7 +6,6 @@
 
 package aisearch;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -111,6 +110,39 @@ public class Grafo  {
             }
 
         }
+    }
+    
+    public ArrayList<Nodo> getNeighbors(Nodo nodo) {
+          //si es con diagonales se crea un número aleatorio con probabilidad 1/2
+        int x = nodo.getX(); int y = nodo.getY();
+        
+        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
+        //verificar los nodos con x constantes y y hacia abajo
+        if ((y != 0)) 
+        {
+            nodosAdyacentes.add(this.getNodo(x, (y - 1)));
+        }
+        
+       //verificar los nodos con x hacia la derecha y y constante
+        if ((x != (this.getAncho() - 1))) {
+            nodosAdyacentes.add(this.getNodo(x + 1, y));
+
+        }
+        //verificar los nodos con x constante y y hacia arriba
+        if ((y != (this.getAlto() - 1)))
+        {
+            nodosAdyacentes.add(this.getNodo(x, y + 1));
+
+        }
+        
+       //verificar los nodos x hacia abajo y y constante
+        if ((x != 0)) 
+        {
+            nodosAdyacentes.add(this.getNodo(x - 1, y));
+
+        }
+        
+        return nodosAdyacentes;
     }
     
     public Nodo getInicio() {
