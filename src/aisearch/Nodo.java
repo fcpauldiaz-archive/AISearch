@@ -40,78 +40,13 @@ public class Nodo implements Comparable<Nodo> {
         distribucion = diagonal;
     }
     
-    public ArrayList<Nodo> getNodosAdyacente(boolean diagonales) 
-    {
-    //si es con diagonales se crea un número aleatorio con probabilidad 1/2
-        
-        
-        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
-        //verificar los nodos con x constantes y y hacia abajo
-        if ((y != 0)) 
-        {
-            nodosAdyacentes.add(grafo.getNodo(x, (y - 1)));
-        }
-        
-       //verificar los nodos con x hacia la derecha y y constante
-        if ((x != (grafo.getAncho() - 1))) {
-            nodosAdyacentes.add(grafo.getNodo(x + 1, y));
 
-        }
-        //verificar los nodos en diagonal
-        if (diagonales)
-        {
-            if (distribucion ==1)
-            {
-                //diagonales hacia derecha y arriba
-                 if ((y != 0) && !(x == (grafo.getAncho() - 1))) 
-                {
-                    nodosAdyacentes.add(grafo.getNodo(x + 1, y - 1));
-
-                }
-                //diagonales hacia  izquierda y abajo
-                if ((x != 0) && (y != (grafo.getAlto() - 1)))
-                {
-                    nodosAdyacentes.add(grafo.getNodo(x - 1, y + 1));
-
-                } 
-            }
-            if (distribucion ==2)
-            {
-                //diagonales hacia abajo y derecha
-                if ((x != (grafo.getAncho()- 1)) && !(y == (grafo.getAlto() - 1))) 
-                {
-                    nodosAdyacentes.add(grafo.getNodo(x + 1, y + 1));
-                }
-                //diagonales hacia izquierda y arriba
-                if ((x != 0) && (y != 0)) 
-                {
-                    nodosAdyacentes.add(grafo.getNodo(x - 1, y - 1));
-
-                }
-            }
-        }
-        //verificar los nodos con x constante y y hacia arriba
-        if ((y != (grafo.getAlto() - 1)))
-        {
-            nodosAdyacentes.add(grafo.getNodo(x, y + 1));
-
-        }
-        
-       //verificar los nodos x hacia abajo y y constante
-        if ((x != 0)) 
-        {
-            nodosAdyacentes.add(grafo.getNodo(x - 1, y));
-
-        }
-        
-        return nodosAdyacentes;
-    }
     public boolean isObstaculo() {
         return Obstaculo;
     }
 
-    public void setIsObstaculo(boolean Obstaculo) {
-        this.Obstaculo = Obstaculo;
+    public void setObstaculo() {
+        this.Obstaculo = true;
     }
 
     public Nodo getRaiz() {

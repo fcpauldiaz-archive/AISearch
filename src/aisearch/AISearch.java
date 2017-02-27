@@ -18,18 +18,23 @@ public class AISearch {
      */
     public static void main(String[] args) {
         
-        int size = 20;
+        int size = 25;
         ImageParser parse = new ImageParser(size);
-//        AStar astar = new AStar(size, size);
-//        astar.getGrafo().crearOstaculo15x15();
-//        astar.calcular(false,false,false);
-//        JFrame window = new JFrame();
-// 
-//        window.setSize(450, 450);
-//        window.setLocationRelativeTo(null);
-//        window.setVisible(true);
-//        window.add(new GrafoGrafico(astar.getGrafo(),size,size ,astar.getPath(),astar.getNodosEvaluados()));
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        AStar astar = new AStar(size, size, parse.getResized());
+        astar.calcular(false,false,false, true);
+        JFrame window = new JFrame();
+ 
+        window.setSize(450, 450);
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        window.add(
+                new GrafoGrafico(
+                    size,size, 
+                    parse.getResized(), astar.getPath(), 
+                    astar.getNodosEvaluados(), astar.getGrafo()
+               )
+        );
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
        
     }

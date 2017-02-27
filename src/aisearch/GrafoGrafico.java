@@ -8,6 +8,7 @@ package aisearch;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Set;
 import javax.swing.JPanel;
@@ -16,26 +17,28 @@ import javax.swing.JPanel;
  *
  * @author SDX
  */
-public class GrafoGrafico extends JPanel{
-    private final Grafo grafo;
+public class GrafoGrafico extends JPanel {
     private final int EscalaX;
     private final int EscalaY;
     private final int ancho;
     private final int alto;
     private final ArrayList<Nodo> path;
+    private final Grafo grafo;
     private final Set<Nodo> nodosEvaluados;
+    private final BufferedImage image;
 
-    public GrafoGrafico(Grafo grafo, int ancho, int alto, ArrayList path, Set<Nodo> nodosEvaluados) {
-        this.grafo = grafo;
-        this.ancho = ancho;
-        this.alto = alto;
-        this.path = path;
+    
+    public GrafoGrafico(int ancho, int alto, BufferedImage image, ArrayList path, Set<Nodo> nodosEvaluados, Grafo grafo) {
         this.EscalaX=400/ancho;
         this.EscalaY=400/alto;
-        this.nodosEvaluados=nodosEvaluados;
+        this.ancho = ancho;
+        this.alto = alto;
+        this.image = image;
+        this.path = path;
+        this.nodosEvaluados = nodosEvaluados;
+        this.grafo = grafo;
         setSize(EscalaX * ancho, EscalaY * alto);
         setVisible(true);
-        
     }
     
     
@@ -54,39 +57,58 @@ public class GrafoGrafico extends JPanel{
           }
      }
     public void paintGrafo(Graphics graphics){
-        graphics.setColor(Color.gray);
-        for (int y = 0; y < alto; y++) 
-       {
-           for (int x = 0; x < ancho; x++)
-           {
+        boolean red = false;
+        ImageColor imageColor = new ImageColor();
+        for (int y = 0; y < alto; y++) {
+           for (int x = 0; x < ancho; x++) {
+             graphics.setColor(Color.white);
+             int type =  imageColor.pixelRGB(this.image.getRGB(x, y));
+             
+             if (type == 0) {
+                graphics.setColor(Color.black);
+             }
+             else if (type == 1) {
+                graphics.setColor(Color.white);
+             }
+             else if (type == 2 && red == false) {
+                red = true;
+                graphics.setColor(Color.red);
+             }
+             else if (type == 3) {
+                graphics.setColor(Color.green);
+             }
+             
              fillRect(graphics,x,y);
-
            }
        }
     }
+    
+    
       @Override
     public void paint(Graphics graphics) {
 
-         graphics.setColor(Color.DARK_GRAY);
-         paintGrafo(graphics);
-         paintObstacles(graphics);
-         paintPath(graphics);
-         //paintEvaluatedNodes(graphics);
+        graphics.setColor(Color.DARK_GRAY);
+        paintGrafo(graphics);
+        //paintObstacles(graphics);
+        paintPath(graphics);
+        //paintEvaluatedNodes(graphics);
     }
-      
+    
     private void paintPath(Graphics graphics) {
        
-       graphics.setColor(Color.red);
-       for (Nodo n1: nodosEvaluados)
-           fillRect(graphics,n1.getX(),n1.getY());
+        graphics.setColor(Color.ORANGE);
+        for (Nodo n1: nodosEvaluados) {
+            if (!this.grafo.getDestino().contains(n1) && n1 != this.grafo.getInicio()) {
+                fillRect(graphics,n1.getX(),n1.getY());
+            }
+       }
        
-        graphics.setColor(Color.GREEN);
+        graphics.setColor(Color.BLUE);
         for (Nodo n : path) {
-           
-           int x = n.getX(); int y = n.getY();
-           fillRect(graphics, x, y);
-           
-           
+            if (!this.grafo.getDestino().contains(n) && n != this.grafo.getInicio()) {
+                int x = n.getX(); int y = n.getY();
+                fillRect(graphics, x, y);   
+            }
        }
        
        

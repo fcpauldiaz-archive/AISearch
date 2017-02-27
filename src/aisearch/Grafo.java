@@ -6,6 +6,8 @@
 
 package aisearch;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -13,16 +15,18 @@ import java.util.ArrayList;
  * @author SDX
  */
 
-public class Grafo {
+public class Grafo  {
     
     private int ancho;
     private int alto;
-    private int[] diagonalesNodos = null;
     private ArrayList<ArrayList<Nodo>> grafo; 
+    private Nodo inicio;
+    private ArrayList<Nodo> destinos;
 
     public Grafo(int w, int h) {
         this.ancho = w;
         this.alto = h;
+        this.destinos = new ArrayList();
         crearGrafo();
     }
 
@@ -86,87 +90,38 @@ public class Grafo {
     public void setGrafo(ArrayList<ArrayList<Nodo>> grafo) {
         this.grafo = grafo;
     }
+    
+    public void setColorsLogic(BufferedImage image) {
+        ImageColor imageColor = new ImageColor();
+        for (int y = 0; y < alto; y++) {
+            for (int x = 0; x < ancho; x++) {
+             
+                int type =  imageColor.pixelRGB(image.getRGB(x, y));
+                
+                if (type == 0) { //black
+                    this.grafo.get(y).get(x).setObstaculo();
+                }
+                else if (type == 2) { //red
+                    this.inicio = this.grafo.get(y).get(x);
+                }
+                else if (type == 3) { //green
+                    this.destinos.add(this.grafo.get(y).get(x)); 
+                }
+             
+            }
 
-    public int[] getDiagonalesNodos() {
-        return diagonalesNodos;
-    }
-
-    public void setDiagonalesNodos(int[] diagonalesNodos) {
-        this.diagonalesNodos = diagonalesNodos;
+        }
     }
     
+    public Nodo getInicio() {
+        return this.inicio;
+    }
+    
+    public ArrayList<Nodo> getDestino() {
+        return this.destinos;
+    }
+        
+
      
-    public void crearOstaculo15x15() {
-         
-        grafo.get(2).get(9).setIsObstaculo(true);
-        grafo.get(3).get(9).setIsObstaculo(true);
-        grafo.get(4).get(9).setIsObstaculo(true);
-        grafo.get(5).get(9).setIsObstaculo(true);
-        grafo.get(6).get(9).setIsObstaculo(true);
-        grafo.get(7).get(9).setIsObstaculo(true);
-        grafo.get(8).get(9).setIsObstaculo(true);
-        grafo.get(9).get(9).setIsObstaculo(true);
-        grafo.get(10).get(9).setIsObstaculo(true);
-        grafo.get(11).get(9).setIsObstaculo(true);
-        grafo.get(12).get(9).setIsObstaculo(true);
-        grafo.get(13).get(9).setIsObstaculo(true);
-        grafo.get(13).get(8).setIsObstaculo(true);
-        grafo.get(13).get(7).setIsObstaculo(true);
-        grafo.get(13).get(6).setIsObstaculo(true);
-        grafo.get(13).get(5).setIsObstaculo(true);
-        grafo.get(2).get(8).setIsObstaculo(true);
-        grafo.get(2).get(7).setIsObstaculo(true);
-        grafo.get(2).get(6).setIsObstaculo(true);
-        grafo.get(2).get(5).setIsObstaculo(true);
-    }
-     
-    public void crearOstaculo20x20() {
-        grafo.get(3).get(13).setIsObstaculo(true);
-        grafo.get(4).get(13).setIsObstaculo(true);
-        grafo.get(5).get(13).setIsObstaculo(true);
-        grafo.get(6).get(13).setIsObstaculo(true);
-        grafo.get(7).get(13).setIsObstaculo(true);
-        grafo.get(8).get(13).setIsObstaculo(true);
-        grafo.get(9).get(13).setIsObstaculo(true);
-        grafo.get(10).get(13).setIsObstaculo(true);
-        grafo.get(11).get(13).setIsObstaculo(true);
-        grafo.get(12).get(13).setIsObstaculo(true);
-        grafo.get(13).get(13).setIsObstaculo(true);
-        grafo.get(14).get(13).setIsObstaculo(true);
-        grafo.get(14).get(12).setIsObstaculo(true);
-        grafo.get(14).get(11).setIsObstaculo(true);
-        grafo.get(14).get(10).setIsObstaculo(true);
-        grafo.get(14).get(9).setIsObstaculo(true);
-        
-        grafo.get(3).get(12).setIsObstaculo(true);
-        grafo.get(3).get(11).setIsObstaculo(true);
-        grafo.get(3).get(10).setIsObstaculo(true);
-        grafo.get(3).get(9).setIsObstaculo(true);
-        
-    }
-public void crearOstaculo25x25() {
-         grafo.get(5).get(16).setIsObstaculo(true);
-        grafo.get(6).get(16).setIsObstaculo(true);
-        grafo.get(7).get(16).setIsObstaculo(true);
-        grafo.get(8).get(16).setIsObstaculo(true);
-        grafo.get(9).get(16).setIsObstaculo(true);
-        grafo.get(10).get(16).setIsObstaculo(true);
-        grafo.get(11).get(16).setIsObstaculo(true);
-        grafo.get(12).get(16).setIsObstaculo(true);
-        grafo.get(13).get(16).setIsObstaculo(true);
-        grafo.get(14).get(16).setIsObstaculo(true);
-        grafo.get(15).get(16).setIsObstaculo(true);
-        grafo.get(16).get(16).setIsObstaculo(true);
-        grafo.get(16).get(15).setIsObstaculo(true);
-        grafo.get(16).get(14).setIsObstaculo(true);
-        grafo.get(16).get(13).setIsObstaculo(true);
-        grafo.get(16).get(12).setIsObstaculo(true);
-        
-        grafo.get(5).get(15).setIsObstaculo(true);
-        grafo.get(5).get(14).setIsObstaculo(true);
-        grafo.get(5).get(13).setIsObstaculo(true);
-        grafo.get(5).get(12).setIsObstaculo(true);
-        
-    }
 }
 
