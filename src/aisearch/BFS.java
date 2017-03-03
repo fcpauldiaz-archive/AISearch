@@ -52,7 +52,7 @@ public class BFS implements AIFramework {
             this.nodosEvaluados.add(last);
             
             
-            if (goalTest(last, destinos)) {//en caso de encontrar el destino, termina el algoritmo  
+            if (goalTest(last)) {//en caso de encontrar el destino, termina el algoritmo  
                 System.out.println("Iteraciones totales-> " + contadorIteraciones);
                 System.out.println(path);
                 System.out.println(destinos);
@@ -64,8 +64,8 @@ public class BFS implements AIFramework {
             }
           
             
-            for (Nodo adyacente : actions(last)) {
-            
+            for (Accion accion : actions(last)) {
+                Nodo adyacente = accion.getDestino();
                 //en caso de que un nodo ya haya sido evaluado
                 //se omite del ciclo
                 
@@ -74,7 +74,7 @@ public class BFS implements AIFramework {
                     ArrayList<Nodo> newPath = new ArrayList();
                     //System.out.println(path);
                     newPath.addAll(path);
-                    Nodo newNode = result(last, adyacente);
+                    Nodo newNode = result(last, accion);
                     newPath.add(newNode);
                     frontera.add(newPath);
                     
@@ -86,9 +86,10 @@ public class BFS implements AIFramework {
         
     }
 
+    //Test if objective is found
     @Override
-    public boolean goalTest(Nodo test, ArrayList<Nodo> goal) {
-        return goal.contains(test);
+    public boolean goalTest(Nodo test) {
+        return this.destinos.contains(test);
     }
 
     @Override
@@ -102,13 +103,16 @@ public class BFS implements AIFramework {
     }
 
     @Override
-    public ArrayList<Nodo> actions(Nodo nodo) {
+    public ArrayList<Accion> actions(Nodo nodo) {
         return this.grafo.getNeighbors(nodo);
     }
 
     @Override
-    public Nodo result(Nodo a, Nodo s) {
-        return s;
+    public Nodo result(Nodo a, Accion s) {
+       if (s.getOrigen().equals(a)) {
+           return s.getDestino();
+       }
+       return null;
     }
 
     public Grafo getGrafo() {

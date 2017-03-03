@@ -112,33 +112,40 @@ public class Grafo  {
         }
     }
     
-    public ArrayList<Nodo> getNeighbors(Nodo nodo) {
+    public ArrayList<Accion> getNeighbors(Nodo nodo) {
           //si es con diagonales se crea un número aleatorio con probabilidad 1/2
         int x = nodo.getX(); int y = nodo.getY();
         
-        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
+        ArrayList<Accion> nodosAdyacentes = new ArrayList(); //lista para meter los nodos adyacentes
         //verificar los nodos con x constantes y y hacia abajo
-        if ((y != 0)) 
-        {
-            nodosAdyacentes.add(this.getNodo(x, (y - 1)));
+        if ((y != 0)) {
+            Nodo temp = this.getNodo(x, y - 1);
+            Accion acction = new Accion(nodo, temp);
+            nodosAdyacentes.add(acction);
         }
         
        //verificar los nodos con x hacia la derecha y y constante
         if ((x != (this.getAncho() - 1))) {
-            nodosAdyacentes.add(this.getNodo(x + 1, y));
+            Nodo temp = this.getNodo(x + 1,y);
+            Accion acction = new Accion(nodo, temp);
+            nodosAdyacentes.add(acction);
 
         }
         //verificar los nodos con x constante y y hacia arriba
         if ((y != (this.getAlto() - 1)))
         {
-            nodosAdyacentes.add(this.getNodo(x, y + 1));
+             Nodo temp = this.getNodo(x, y + 1);
+            Accion acction = new Accion(nodo, temp);
+            nodosAdyacentes.add(acction);
 
         }
         
        //verificar los nodos x hacia abajo y y constante
         if ((x != 0)) 
         {
-            nodosAdyacentes.add(this.getNodo(x - 1, y));
+            Nodo temp = this.getNodo(x - 1, y);
+            Accion acction = new Accion(nodo, temp);
+            nodosAdyacentes.add(acction);
 
         }
         

@@ -6,8 +6,6 @@
 
 package aisearch;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author SDX
