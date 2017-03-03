@@ -6,6 +6,7 @@
 package aisearch;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,16 +19,25 @@ public class AISearch {
      */
     public static void main(String[] args) {
         
-        int size = 25;
+        // Con caja de texto
+        String seleccion = JOptionPane.showInputDialog(
+           null,
+           "Size of matrix",
+           JOptionPane.QUESTION_MESSAGE);  // el icono sera un iterrogante
+
+        
+        int size = Integer.parseInt(seleccion);
         ImageParser parse = new ImageParser(size);
         AStar astar = new AStar(size, size, parse.getResized());
         BFS bfs = new BFS(size, size, parse.getResized());
         bfs.run();
+        DFS dfs = new DFS(size, size, parse.getResized());
+        dfs.run();
         astar.calcular(false,false,false, false);
+        
         JFrame window = new JFrame();
- 
+        window.setLocation(2,150);
         window.setSize(450, 450);
-        window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.add(
                 new GrafoGrafico(
@@ -38,18 +48,31 @@ public class AISearch {
         );
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JFrame window2 = new JFrame();
-        window2.setSize(450, 450);
-        window2.setLocationRelativeTo(null);
-        window2.setVisible(true);
-        window2.add(
+        JFrame windowBFS = new JFrame();
+        windowBFS.setSize(450, 450);
+        windowBFS.setLocationRelativeTo(null);
+        windowBFS.setVisible(true);
+        windowBFS.add(
                 new GrafoGrafico(
                     size,size, 
                     parse.getResized(), bfs.getCompletePath(), 
                     bfs.getNodosEvaluados(), bfs.getGrafo()
                )
         );
-        window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        windowBFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JFrame windowDFS = new JFrame();
+        windowDFS.setSize(450, 450);
+        windowDFS.setLocation(900, 150);
+        windowDFS.setVisible(true);
+        windowDFS.add(
+                new GrafoGrafico(
+                    size,size, 
+                    parse.getResized(), dfs.getCompletePath(), 
+                    dfs.getNodosEvaluados(), dfs.getGrafo()
+               )
+        );
+        windowDFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
        
     }
