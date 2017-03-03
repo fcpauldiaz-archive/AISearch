@@ -131,23 +131,23 @@ public class Grafo  {
             nodosAdyacentes.add(acction);
 
         }
+           //verificar los nodos x hacia abajo y y constante
+        if ((x != 0)) {
+            Nodo temp = this.getNodo(x - 1, y);
+            Accion acction = new Accion(nodo, temp);
+            nodosAdyacentes.add(acction);
+
+        }
+
         //verificar los nodos con x constante y y hacia arriba
-        if ((y != (this.getAlto() - 1)))
-        {
+        if ((y != (this.getAlto() - 1))) {
              Nodo temp = this.getNodo(x, y + 1);
             Accion acction = new Accion(nodo, temp);
             nodosAdyacentes.add(acction);
 
         }
         
-       //verificar los nodos x hacia abajo y y constante
-        if ((x != 0)) 
-        {
-            Nodo temp = this.getNodo(x - 1, y);
-            Accion acction = new Accion(nodo, temp);
-            nodosAdyacentes.add(acction);
-
-        }
+    
         
         return nodosAdyacentes;
     }

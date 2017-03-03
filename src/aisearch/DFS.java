@@ -37,7 +37,7 @@ public class DFS implements AIFramework {
         
     }
     
-    public void run() {
+    public void run(Nodo ) {
         Stack<Nodo> frontera = new Stack();
         frontera.add(inicio);
         int contadorIteraciones = 0;
@@ -45,7 +45,7 @@ public class DFS implements AIFramework {
         while (!frontera.isEmpty()) {
             
             Nodo evaluate = frontera.pop();//get first node
-           
+            System.out.println(evaluate);
             
             if (goalTest(evaluate)) {//en caso de encontrar el destino, termina el algoritmo  
                 System.out.println("Iteraciones totales-> " + contadorIteraciones);
@@ -57,28 +57,25 @@ public class DFS implements AIFramework {
                 //reconstruirCamino(actual);//se muestra el nuevo camino
                 break;
             }
-          
-            if (nodosEvaluados.contains(evaluate)) {
-                //System.out.println(evaluate);
-                continue;
-            }
-            
-            this.nodosEvaluados.add(evaluate);
-            if (!evaluate.isObstaculo()) {
-                ArrayList<Accion> f = actions(evaluate);
-                for (Accion accion: f){
-                    Nodo nodo = accion.getDestino();
+           
+            ArrayList<Accion> f = actions(evaluate);
+            for (Accion accion: f){
+                Nodo nodo = result(evaluate, accion);
+                if (!nodo.isObstaculo()) {
                     if (nodosEvaluados.contains(nodo)) {
+                        //nodo.setRaiz(evaluate);
                         //System.out.println(evaluate);
                         continue;
                     }
-                    if (!nodo.isObstaculo()) {
-                        nodo.setRaiz(evaluate);
-                        frontera.add(nodo);
-                    }
+                    this.nodosEvaluados.add(nodo);
+
+                    //nodo.setRaiz(evaluate);
+                    frontera.add(nodo);
+                    break;
                 }
-                
             }
+                
+            
             contadorIteraciones++;
         }
         
