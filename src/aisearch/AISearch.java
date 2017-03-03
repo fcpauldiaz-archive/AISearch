@@ -32,7 +32,6 @@ public class AISearch {
         BFS bfs = new BFS(size, size, parse.getResized());
         bfs.run();
         DFS dfs = new DFS(size, size, parse.getResized());
-        dfs.run();
         astar.calcular(false,false,false, false);
         
         JFrame window = new JFrame();

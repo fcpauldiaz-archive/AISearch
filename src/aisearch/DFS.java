@@ -34,51 +34,36 @@ public class DFS implements AIFramework {
         this.destinos = grafo.getDestino();  
         this.nodosEvaluados = new HashSet();
         this.completePath = new ArrayList();
+        this.completePath =  run(this.inicio, new ArrayList(), new ArrayList());
         
     }
     
-    public void run(Nodo ) {
-        Stack<Nodo> frontera = new Stack();
-        frontera.add(inicio);
-        int contadorIteraciones = 0;
-        
-        while (!frontera.isEmpty()) {
-            
-            Nodo evaluate = frontera.pop();//get first node
-            System.out.println(evaluate);
-            
-            if (goalTest(evaluate)) {//en caso de encontrar el destino, termina el algoritmo  
-                System.out.println("Iteraciones totales-> " + contadorIteraciones);
-                //System.out.println(path);
-                reconstruirCamino(evaluate);
-                System.out.println(evaluate);
-                //this.completePath = path;
-               // System.out.println("Costo Total-> " + (pathCost(last)));
-                //reconstruirCamino(actual);//se muestra el nuevo camino
-                break;
-            }
-           
-            ArrayList<Accion> f = actions(evaluate);
-            for (Accion accion: f){
-                Nodo nodo = result(evaluate, accion);
-                if (!nodo.isObstaculo()) {
-                    if (nodosEvaluados.contains(nodo)) {
-                        //nodo.setRaiz(evaluate);
-                        //System.out.println(evaluate);
-                        continue;
+    public ArrayList<Nodo> run(Nodo actual, ArrayList<Nodo> path,  ArrayList<Nodo> shortest ) {
+        path.add(actual);
+      
+        if (goalTest(actual)) {//en caso de encontrar el destino, termina el algoritmo  
+           //System.out.println("Iteraciones totales-> " + contadorIteraciones);
+           //System.out.println("Costo Total-> " + (pathCost(actual)));
+           //reconstruirCamino(actual);//se muestra el nuevo camino
+           //break;
+           return path;
+        }
+        for (Accion accion: actions(actual)) {
+            Nodo children = result(actual, accion);
+            if (!children.isObstaculo()) {
+                if (!nodosEvaluados.contains(children)) {
+                    nodosEvaluados.add(children);
+                    if (shortest.isEmpty() || path.size() < shortest.size()) {
+                        ArrayList<Nodo> newPath = run(children, path, shortest);
+                        if (!newPath.isEmpty()) {
+                            shortest = newPath;
+                        }
                     }
-                    this.nodosEvaluados.add(nodo);
-
-                    //nodo.setRaiz(evaluate);
-                    frontera.add(nodo);
-                    break;
                 }
             }
-                
-            
-            contadorIteraciones++;
+           
         }
-        
+        return shortest;
     }
 
     @Override
