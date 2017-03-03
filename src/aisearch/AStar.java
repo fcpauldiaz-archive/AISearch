@@ -48,9 +48,10 @@ public class AStar implements AIFramework {
             Nodo actual = nodosPorEvaluar.poll();//obtener el nodo con menor funcion f
 
             if (goalTest(actual)) {//en caso de encontrar el destino, termina el algoritmo  
-                System.out.println("Iteraciones totales-> " + contadorIteraciones);
-                System.out.println("Costo Total-> " + (pathCost(actual)));
+                System.out.println("Iteraciones totales A* -> " + contadorIteraciones);
                 reconstruirCamino(actual);//se muestra el nuevo camino
+                System.out.println("Costo Total A* -> " + (pathCost(this.path)));
+                System.out.println(path.toString() + " ->Camino más corto");
                 break;
             }
             //cambio de estructura para evaluar el nodo actual
@@ -59,8 +60,8 @@ public class AStar implements AIFramework {
 
             //función obtiene los nodos adyacentes del nodo actual
             for (Accion accion : actions(actual)) {
-                Nodo adyacente = accion.getDestino();
-                //en caso de que un nodo ya haya sido evaluado
+                Nodo adyacente = result(actual, accion);
+               //en caso de que un nodo ya haya sido evaluado
                 //se omite del ciclo
                 if (nodosEvaluados.contains(adyacente))
                     continue; //se salta una iteracion
@@ -68,7 +69,7 @@ public class AStar implements AIFramework {
                 //mientras no sea un obstaculo el nodo
                 if (!adyacente.isObstaculo()) {
                     //costo real del nodo adyacente
-                    double nuevoCosto = stepCost(actual, adyacente);
+                    double nuevoCosto = stepCost(actual,accion,  adyacente);
                     //se evalua si el nodoa adyacente tiene un menor costo
                     
                     if (!nodosPorEvaluar.contains(adyacente)|| nuevoCosto < adyacente.getFuncionG()){
@@ -100,8 +101,6 @@ public class AStar implements AIFramework {
         }
         path.add(nodo);//agregar el último nodo
         Collections.reverse(path); //cambiar el orden
-        System.out.println("");
-        System.out.println(path.toString() + " ->Camino más corto");
         
     }
    
@@ -163,24 +162,29 @@ public class AStar implements AIFramework {
     }
 
     @Override
-    public Nodo result(Nodo a, Accion s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Nodo result(Nodo s, Accion a) {
+        if (a.getOrigen().equals(s)) {
+           return a.getDestino();
+        }
+        return null;
     }
-
-    //acumulated cost and actual cost
-    @Override
-    public double stepCost(Nodo actual, Nodo adyacente) {
-        return actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
-    }
-
+   
     @Override
     public ArrayList<Accion> actions(Nodo nodo) {
        return this.grafo.getNeighbors(nodo);
     }
-    
+    @Override
+    public double stepCost(Nodo s1, Accion a, Nodo s2) {
+       if (s1.equals(a.getOrigen()) && s2.equals(a.getDestino())) {
+           return s1.getFuncionG() + this.getDistanciaEntre(s1, s2);
+       }
+       throw new UnsupportedOperationException("Step cost not valid"); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //Get the total cost of the path
     @Override
-    public double pathCost(Nodo nodo) {
+    public double pathCost(ArrayList<Nodo> path) {
+        Nodo nodo = path.get(path.size() - 1);
         return nodo.getFuncionG() + nodo.getFuncionHeuristica();
     }
     
@@ -188,8 +192,10 @@ public class AStar implements AIFramework {
     public Set<Nodo> getNodosEvaluados() {
         return nodosEvaluados;
     }
+    
 
     public Grafo getGrafo() {
         return grafo;
     }
+
 }

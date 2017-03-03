@@ -9,10 +9,8 @@ package aisearch;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  *
@@ -23,8 +21,9 @@ public class DFS implements AIFramework {
     private final Grafo grafo;
     private final Nodo inicio;
     private final ArrayList<Nodo> destinos;
-    //private final ArrayList<Nodo> path = new ArrayList<>();
-    private  Set<Nodo> nodosEvaluados;
+    private int contadorIteraciones = 0;
+    private int cost = 0;
+    private final Set<Nodo> nodosEvaluados;
     private ArrayList<Nodo> completePath;
     
     public DFS(int ancho, int alto, BufferedImage image) {
@@ -35,17 +34,16 @@ public class DFS implements AIFramework {
         this.nodosEvaluados = new HashSet();
         this.completePath = new ArrayList();
         this.completePath =  run(this.inicio, new ArrayList(), new ArrayList());
+        System.out.println("Iteraciones totales DFS *-> " + this.contadorIteraciones);
+        System.out.println("Costo total DFS *-> " + pathCost(this.completePath));
+        System.out.println(this.completePath);
         
     }
     
-    public ArrayList<Nodo> run(Nodo actual, ArrayList<Nodo> path,  ArrayList<Nodo> shortest ) {
+    private ArrayList<Nodo> run(Nodo actual, ArrayList<Nodo> path,  ArrayList<Nodo> shortest ) {
         path.add(actual);
       
-        if (goalTest(actual)) {//en caso de encontrar el destino, termina el algoritmo  
-           //System.out.println("Iteraciones totales-> " + contadorIteraciones);
-           //System.out.println("Costo Total-> " + (pathCost(actual)));
-           //reconstruirCamino(actual);//se muestra el nuevo camino
-           //break;
+        if (goalTest(actual)) {//en caso de encontrar el destino, regresa en la recursividad  
            return path;
         }
         for (Accion accion: actions(actual)) {
@@ -53,16 +51,19 @@ public class DFS implements AIFramework {
             if (!children.isObstaculo()) {
                 if (!nodosEvaluados.contains(children)) {
                     nodosEvaluados.add(children);
+                    this.contadorIteraciones++;
                     if (shortest.isEmpty() || path.size() < shortest.size()) {
                         ArrayList<Nodo> newPath = run(children, path, shortest);
                         if (!newPath.isEmpty()) {
                             shortest = newPath;
                         }
+                       
                     }
                 }
             }
            
         }
+       
         return shortest;
     }
 
@@ -71,43 +72,38 @@ public class DFS implements AIFramework {
         return this.destinos.contains(test);
     }
 
+  
     @Override
-    public double stepCost(Nodo nodo, Nodo nodo2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double pathCost(Nodo nodo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double pathCost(ArrayList<Nodo> path) {
+        double costo = 0;
+        for(int i = 0; i < path.size() - 1; i++) {
+            Accion temp = new Accion(path.get(i), path.get(i+1));
+            costo += stepCost(path.get(i), temp, path.get(i+1));
+        }
+        return costo;
     }
 
     @Override
     public ArrayList<Accion> actions(Nodo nodo) {
         return this.grafo.getNeighbors(nodo);
     }
-
+    
     @Override
-    public Nodo result(Nodo a, Accion s) {
-        if (s.getOrigen().equals(a)) {
-           return s.getDestino();
+    public double stepCost(Nodo s1, Accion a, Nodo s2) {
+        if (s1.equals(a.getOrigen()) && s2.equals(a.getDestino())) {
+           return 1;
+       }
+       throw new UnsupportedOperationException("Step cost not valid"); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Nodo result(Nodo s, Accion a) {
+        if (a.getOrigen().equals(s)) {
+           return a.getDestino();
         }
         return null;
     }
     
-       //método para mostrar el camino más corto encontrado
-    public void reconstruirCamino(Nodo nodo)
-    {
-        //grafo.getGrafoGrafico(); //mostrar grafo en terminal
-        while (!(nodo.getRaiz() == null)) {
-            completePath.add(nodo);
-            nodo = nodo.getRaiz();
-        }
-        completePath.add(nodo);//agregar el último nodo
-        Collections.reverse(completePath); //cambiar el orden
-        System.out.println("");
-        System.out.println(completePath.toString() + " ->Camino más corto");
-        
-    }
 
     public Grafo getGrafo() {
         return grafo;
@@ -120,6 +116,7 @@ public class DFS implements AIFramework {
     public ArrayList<Nodo> getCompletePath() {
         return completePath;
     }
+
     
     
     

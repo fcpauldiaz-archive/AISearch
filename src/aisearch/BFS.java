@@ -22,8 +22,7 @@ public class BFS implements AIFramework {
     private final Grafo grafo;
     private final Nodo inicio;
     private final ArrayList<Nodo> destinos;
-    //private final ArrayList<Nodo> path = new ArrayList<>();
-    private  Set<Nodo> nodosEvaluados;
+    private final  Set<Nodo> nodosEvaluados;
     private ArrayList<Nodo> completePath;
     
     public BFS(int ancho, int alto, BufferedImage image) {
@@ -53,11 +52,10 @@ public class BFS implements AIFramework {
             
             
             if (goalTest(last)) {//en caso de encontrar el destino, termina el algoritmo  
-                System.out.println("Iteraciones totales-> " + contadorIteraciones);
+                System.out.println("Iteraciones totales BFS *-> " + contadorIteraciones);
                 System.out.println(path);
-                System.out.println(destinos);
-                System.out.println(last);
                 this.completePath = path;
+                System.out.println("Costo total BFS *-> " + pathCost(path));
                // System.out.println("Costo Total-> " + (pathCost(last)));
                 //reconstruirCamino(actual);//se muestra el nuevo camino
                 break;
@@ -92,14 +90,16 @@ public class BFS implements AIFramework {
         return this.destinos.contains(test);
     }
 
-    @Override
-    public double stepCost(Nodo nodo, Nodo nodo2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
-    public double pathCost(Nodo nodo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double pathCost(ArrayList<Nodo> path) {
+        double costo = 0;
+        for(int i = 0; i < path.size() - 1; i++) {
+            Accion temp = new Accion(path.get(i), path.get(i+1));
+            costo += stepCost(path.get(i), temp, path.get(i+1));
+        }
+        return costo;
     }
 
     @Override
@@ -108,11 +108,11 @@ public class BFS implements AIFramework {
     }
 
     @Override
-    public Nodo result(Nodo a, Accion s) {
-       if (s.getOrigen().equals(a)) {
-           return s.getDestino();
-       }
-       return null;
+    public Nodo result(Nodo s, Accion a) {
+        if (a.getOrigen().equals(s)) {
+           return a.getDestino();
+        }
+        return null;
     }
 
     public Grafo getGrafo() {
@@ -125,6 +125,14 @@ public class BFS implements AIFramework {
 
     public ArrayList<Nodo> getCompletePath() {
         return completePath;
+    }
+
+    @Override
+    public double stepCost(Nodo s1, Accion a, Nodo s2) {
+       if (s1.equals(a.getOrigen()) && s2.equals(a.getDestino())) {
+           return 1;
+       }
+       throw new UnsupportedOperationException("Step cost not valid"); //To change body of generated methods, choose Tools | Templates.
     }
     
     
