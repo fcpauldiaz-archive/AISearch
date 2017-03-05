@@ -25,7 +25,7 @@ public class ImageColor {
         if ((sum) > 750) {
             return 1; //white
         }
-        if (green > 100 && red > 20 && blue < 80) {
+        if (green > 100 && red > 20 && blue < 80 || (red <= 15 && green > 200 && blue <= 15)) {
        
             return 3;  //green
          }
@@ -35,7 +35,7 @@ public class ImageColor {
         if (red == green && green == blue) {
             return 0; //black
         }
-        return 3; //green
+        return 1; //green
    
     }
 }
