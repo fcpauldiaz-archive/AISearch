@@ -52,6 +52,7 @@ public class DFS implements AIFramework {
                 if (!nodosEvaluados.contains(children)) {
                     nodosEvaluados.add(children);
                     this.contadorIteraciones++;
+                    //verificar camino más corto
                     if (shortest.isEmpty() || path.size() < shortest.size()) {
                         ArrayList<Nodo> newPath = run(children, path, shortest);
                         if (!newPath.isEmpty()) {

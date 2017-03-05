@@ -28,7 +28,7 @@ public class ImageParser {
         
         try {
            // get the BufferedImage, using the ImageIO class
-            BufferedImage image = ImageIO.read( new File("lab.png"));
+            BufferedImage image = ImageIO.read( new File("lab3.png"));
             marchThroughImage(image);
           } catch (IOException e) {
             System.err.println(e.getMessage());

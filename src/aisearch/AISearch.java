@@ -22,8 +22,18 @@ public class AISearch {
         // Con caja de texto
         String seleccion = JOptionPane.showInputDialog(
            null,
-           "Size of matrix",
+           "Size of matrix","",
            JOptionPane.QUESTION_MESSAGE);  // el icono sera un iterrogante
+
+            // Con JCombobox
+        Object type = JOptionPane.showInputDialog(
+           null,
+           "Seleccione opcion",
+           "Selector de opciones",
+           JOptionPane.QUESTION_MESSAGE,
+           null,  // null para icono defecto
+           new Object[] { "Manhattan", "Cross Breaking Ties" }, 
+           "Manhattan");
 
         
         int size = Integer.parseInt(seleccion);
@@ -32,7 +42,7 @@ public class AISearch {
         BFS bfs = new BFS(size, size, parse.getResized());
         bfs.run();
         DFS dfs = new DFS(size, size, parse.getResized());
-        astar.calcular(false,false,false, false);
+        astar.calcular(false,false,false, type.equals("Manhattan"));
         
         JFrame window = new JFrame();
         window.setLocation(2,150);
