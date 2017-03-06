@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author SDX
  */
-public class DFS implements AIFramework {
+public class DFS extends AIFramework {
     
     private final Grafo grafo;
     private final Nodo inicio;
@@ -46,7 +46,7 @@ public class DFS implements AIFramework {
         if (goalTest(actual)) {//en caso de encontrar el destino, regresa en la recursividad  
            return path;
         }
-        for (Accion accion: actions(actual)) {
+        for (Accion accion: actions(actual, grafo)) {
             Nodo children = result(actual, accion);
             if (!children.isObstaculo()) {
                 if (!nodosEvaluados.contains(children)) {
@@ -84,10 +84,6 @@ public class DFS implements AIFramework {
         return costo;
     }
 
-    @Override
-    public ArrayList<Accion> actions(Nodo nodo) {
-        return this.grafo.getNeighbors(nodo);
-    }
     
     @Override
     public double stepCost(Nodo s1, Accion a, Nodo s2) {

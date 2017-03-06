@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @author SDX
  */
-public class BFS implements AIFramework {
+public class BFS extends AIFramework {
     
     private final Grafo grafo;
     private final Nodo inicio;
@@ -62,7 +62,7 @@ public class BFS implements AIFramework {
             }
           
             
-            for (Accion accion : actions(last)) {
+            for (Accion accion : actions(last, grafo)) {
                 Nodo adyacente = accion.getDestino();
                 //en caso de que un nodo ya haya sido evaluado
                 //se omite del ciclo
@@ -102,10 +102,6 @@ public class BFS implements AIFramework {
         return costo;
     }
 
-    @Override
-    public ArrayList<Accion> actions(Nodo nodo) {
-        return this.grafo.getNeighbors(nodo);
-    }
 
     @Override
     public Nodo result(Nodo s, Accion a) {

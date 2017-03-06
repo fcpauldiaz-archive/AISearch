@@ -61,21 +61,21 @@ public class GrafoGrafico extends JPanel {
         ImageColor imageColor = new ImageColor();
         for (int y = 0; y < alto; y++) {
            for (int x = 0; x < ancho; x++) {
-             graphics.setColor(Color.white);
+             graphics.setColor(Color.RED);
              int type =  imageColor.pixelRGB(this.image.getRGB(x, y));
              
              if (type == 0) {
-                graphics.setColor(Color.black);
+                graphics.setColor(Color.BLACK);
              }
              else if (type == 1) {
-                graphics.setColor(Color.white);
+                graphics.setColor(Color.WHITE);
              }
              else if (type == 2 && red == false) {
                 red = true;
-                graphics.setColor(Color.red);
+                graphics.setColor(Color.RED);
              }
              else if (type == 3) {
-                graphics.setColor(Color.green);
+                graphics.setColor(Color.GREEN);
              }
              
              fillRect(graphics,x,y);
@@ -87,7 +87,6 @@ public class GrafoGrafico extends JPanel {
       @Override
     public void paint(Graphics graphics) {
 
-        graphics.setColor(Color.DARK_GRAY);
         paintGrafo(graphics);
         //paintObstacles(graphics);
         paintPath(graphics);
@@ -96,7 +95,7 @@ public class GrafoGrafico extends JPanel {
     
     private void paintPath(Graphics graphics) {
        
-        graphics.setColor(Color.ORANGE);
+        graphics.setColor(Color.PINK);
         for (Nodo n1: nodosEvaluados) {
             if (!this.grafo.getDestino().contains(n1) && n1 != this.grafo.getInicio()) {
                 fillRect(graphics,n1.getX(),n1.getY());

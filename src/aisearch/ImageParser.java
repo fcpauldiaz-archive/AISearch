@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
 * Universidad Del Valle de Guatemala
@@ -23,12 +24,12 @@ public class ImageParser {
     private int size;
     private BufferedImage resized;
     
-    public ImageParser(int size) {
+    public ImageParser(int size, File imageFile) {
         this.size = size;
         
         try {
            // get the BufferedImage, using the ImageIO class
-            BufferedImage image = ImageIO.read( new File("lab3.png"));
+            BufferedImage image = ImageIO.read( imageFile);
             marchThroughImage(image);
           } catch (IOException e) {
             System.err.println(e.getMessage());

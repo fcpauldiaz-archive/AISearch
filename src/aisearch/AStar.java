@@ -18,7 +18,7 @@ import java.util.Set;
  * @author SDX
  */
 
-public class AStar implements AIFramework {
+public class AStar extends AIFramework {
 
     private final Grafo grafo;
     private final Nodo inicio;
@@ -59,7 +59,7 @@ public class AStar implements AIFramework {
             nodosEvaluados.add(actual);
 
             //función obtiene los nodos adyacentes del nodo actual
-            for (Accion accion : actions(actual)) {
+            for (Accion accion : actions(actual, grafo)) {
                 Nodo adyacente = result(actual, accion);
                //en caso de que un nodo ya haya sido evaluado
                 //se omite del ciclo
@@ -136,7 +136,7 @@ public class AStar implements AIFramework {
         //cross breaking ties
         double dx1 = current.getX()-goal.getX();
         double dy1 = current.getY()-goal.getY();
-        double p = 1/1000;//minimum cost of taking one step/expected maximum path length
+        double p = D/100;//minimum cost of taking one step/expected maximum path length
         double dw = inicio.getX()-goal.getX(); //cross heuristics
         double dz = inicio.getY()-goal.getY(); //cross heuristics
     
@@ -146,7 +146,7 @@ public class AStar implements AIFramework {
             return promedio;//normal heuristics for diagonals
         if (h1) //sum of absolute differences. Manhattan distance
             return D*(dx + dy);
-        return (D*(dx+dy))+Math.abs(dx1*dz-dw*dy1); //normal heuristic + cross breaking ties
+        return (D*(dx+dy))+Math.abs(dx1*dz-dw*dy1)*p; //normal heuristic + cross breaking ties
        
     }
 
@@ -169,10 +169,6 @@ public class AStar implements AIFramework {
         return null;
     }
    
-    @Override
-    public ArrayList<Accion> actions(Nodo nodo) {
-       return this.grafo.getNeighbors(nodo);
-    }
     @Override
     public double stepCost(Nodo s1, Accion a, Nodo s2) {
        if (s1.equals(a.getOrigen()) && s2.equals(a.getDestino())) {

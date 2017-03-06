@@ -5,6 +5,8 @@
  */
 package aisearch;
 
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,6 +20,14 @@ public class AISearch {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("./"));
+        chooser.setDialogTitle("Escoger imagen");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        System.out.println(chooser.showOpenDialog(null));
+        
         
         // Con caja de texto
         String seleccion = JOptionPane.showInputDialog(
@@ -37,7 +47,7 @@ public class AISearch {
 
         
         int size = Integer.parseInt(seleccion);
-        ImageParser parse = new ImageParser(size);
+        ImageParser parse = new ImageParser(size, chooser.getSelectedFile());
         AStar astar = new AStar(size, size, parse.getResized());
         BFS bfs = new BFS(size, size, parse.getResized());
         bfs.run();
